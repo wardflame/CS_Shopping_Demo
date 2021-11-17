@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\scehr\\source\\repos\\1543493_Week8_Challenge\\1543493_Week8_Challenge\\1543493_Week8_Challenge.csproj": {}
+    "C:\\Users\\scehr\\OneDrive\\__GitHub__\\1543493_Week8_Challenge\\1543493_Week8_Challenge\\1543493_Week8_Challenge.csproj": {}
   },
   "projects": {
-    "C:\\Users\\scehr\\source\\repos\\1543493_Week8_Challenge\\1543493_Week8_Challenge\\1543493_Week8_Challenge.csproj": {
+    "C:\\Users\\scehr\\OneDrive\\__GitHub__\\1543493_Week8_Challenge\\1543493_Week8_Challenge\\1543493_Week8_Challenge.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\scehr\\source\\repos\\1543493_Week8_Challenge\\1543493_Week8_Challenge\\1543493_Week8_Challenge.csproj",
+        "projectUniqueName": "C:\\Users\\scehr\\OneDrive\\__GitHub__\\1543493_Week8_Challenge\\1543493_Week8_Challenge\\1543493_Week8_Challenge.csproj",
         "projectName": "1543493_Week8_Challenge",
-        "projectPath": "C:\\Users\\scehr\\source\\repos\\1543493_Week8_Challenge\\1543493_Week8_Challenge\\1543493_Week8_Challenge.csproj",
+        "projectPath": "C:\\Users\\scehr\\OneDrive\\__GitHub__\\1543493_Week8_Challenge\\1543493_Week8_Challenge\\1543493_Week8_Challenge.csproj",
         "packagesPath": "C:\\Users\\scehr\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\scehr\\source\\repos\\1543493_Week8_Challenge\\1543493_Week8_Challenge\\obj\\",
+        "outputPath": "C:\\Users\\scehr\\OneDrive\\__GitHub__\\1543493_Week8_Challenge\\1543493_Week8_Challenge\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\scehr\\AppData\\Roaming\\NuGet\\NuGet.Config",

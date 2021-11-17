@@ -38,7 +38,7 @@ namespace _1543493_Week8_Challenge.ShopSystem
             {
                 Utilities.PrintShopBanner();
 
-                Console.WriteLine($"Welcome to the Shifting Sands Bazaar. We wish you a pleasant experience whilst browsing our armaments.\n");
+                Console.WriteLine($"\nWelcome to the Shifting Sands Bazaar. We wish you a pleasant experience whilst browsing our armaments.");
 
                 if (clientList.Count <= 0)
                 {

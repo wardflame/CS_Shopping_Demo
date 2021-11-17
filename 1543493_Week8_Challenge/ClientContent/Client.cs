@@ -37,7 +37,7 @@ namespace _1543493_Week8_Challenge.ClientContent
 
         private static string GetClientName()
         {
-            Console.Write("Input new client's name: ");
+            Console.Write("\nInput new client's name: ");
             string input = Console.ReadLine();
 
             if (!Utilities.InputVerification($"\nAre you sure {input} is the new client's name? (y/n)"))
@@ -52,7 +52,7 @@ namespace _1543493_Week8_Challenge.ClientContent
 
         private static decimal GetClientBalance(string clientName)
         {
-            Console.Write($"Input {clientName}'s balance: ");
+            Console.Write($"\nInput {clientName}'s balance: ");
             string input = Console.ReadLine();
 
             if (!decimal.TryParse(input, out _))
@@ -121,11 +121,11 @@ namespace _1543493_Week8_Challenge.ClientContent
             Console.ForegroundColor = ConsoleColor.Yellow;
             if (name.EndsWith("s"))
             {
-                Console.Write($"{name}' balance");
+                Console.Write($"\n{name}' balance");
             }
             else
             {
-                Console.Write($"{name}'s balance");
+                Console.Write($"\n{name}'s balance");
             }
             Console.ResetColor();
             Console.WriteLine($": {Utilities.DecimalToString(balance)}");

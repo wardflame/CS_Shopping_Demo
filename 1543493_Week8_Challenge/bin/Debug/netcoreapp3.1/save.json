@@ -1,0 +1,10 @@
+{
+  "currentClient": {
+    "name": "Mohammad",
+    "balance": 1999999999.0,
+    "inventory": [],
+    "basket": []
+  },
+  "clientList": [],
+  "bazaarInventory": null
+}

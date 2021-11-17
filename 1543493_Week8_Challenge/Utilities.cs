@@ -13,8 +13,7 @@ namespace _1543493_Week8_Challenge
             Console.WriteLine(@"
 (~|_ . |`_|_. _  _   (~ _  _  _| _  |~) _ _  _  _  _
 _)| ||~|~ | || |(_|  _)(_|| |(_|_\  |_)(_|/_(_|(_|| 
-                 _|                                 
-");
+                 _|                                 ");
             Console.ResetColor();
         }
 

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "spUkwwYZ+j06pVxZRDsv6ACiTTiV3o2t6m4kJ3kVn+e6uAWWkpbBDINyfkrE+iXccwMhlrTdA27GxMu40fZNow==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\scehr\\source\\repos\\1543493_Week8_Challenge\\1543493_Week8_Challenge\\1543493_Week8_Challenge.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\scehr\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

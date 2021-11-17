@@ -1,4 +1,4 @@
-- []### 7/10 ###
+- [ ] ### 7/10 ###
 - [x] Player class
 - string name
 - string description

@@ -430,7 +430,8 @@ namespace _1543493_Week8_Challenge.ShopSystem
         }
 
         /// <summary>
-        /// 
+        /// Same as above. Sort the shop items by enum type and header them accordingly. Provide cost for one unit rather than total
+        /// units. If an item's stock is reduced to 0, print only the name, in red, and provide a notice for the item being out of stock.
         /// </summary>
         /// <returns></returns>
         private int PrintShopInventory()
@@ -466,6 +467,11 @@ namespace _1543493_Week8_Challenge.ShopSystem
             return inventorySize;
         }
 
+        /// <summary>
+        /// Ask user how many of the selected client inventory item they want to sell back to the bazaar, and provide the total they will
+        /// receive back at the reduced rate. User will receive red flags for trying to sell back more stock than is in the client inventory.
+        /// </summary>
+        /// <param name="item"></selected item from client inventory.>
         private void SellItemToShop(Item item)
         {
             while (true)
@@ -520,6 +526,12 @@ namespace _1543493_Week8_Challenge.ShopSystem
             }
         }
 
+        /// <summary>
+        /// Same as GetItemFromInventory, line 372: get the item at the designated number and return it for further processing. If item has no
+        /// stock left, user will be denied from interacting with it.
+        /// </summary>
+        /// <param name="inputInt"></number correlating to list index.>
+        /// <returns></item to be processed.>
         private Item GetItemFromShop(int inputInt)
         {
             Item selectedItem = null;
@@ -545,6 +557,10 @@ namespace _1543493_Week8_Challenge.ShopSystem
             return selectedItem;
         }
 
+        /// <summary>
+        /// Ask user how many of the selected item they want from the shop. Item, at quantity, will be added to the client's basket.
+        /// </summary>
+        /// <param name="item"></item to be processed.>
         private void AddItemToBasket(Item item)
         {
             while (true)
@@ -577,6 +593,11 @@ namespace _1543493_Week8_Challenge.ShopSystem
             }
         }
 
+
+        /// <summary>
+        /// Selected item from basket will be removed from the basket at input quantity.
+        /// </summary>
+        /// <param name="item"></basket item to be removed.>
         private void RemoveItemFromBasket(Item item)
         {
             while (true)
@@ -615,6 +636,11 @@ namespace _1543493_Week8_Challenge.ShopSystem
             }
         }
 
+        /// <summary>
+        /// Retrieve item from the basket list for processing.
+        /// </summary>
+        /// <param name="inputInt"></index number.>
+        /// <returns></basket item to be processed.>
         private Item GetItemFromBasket(int inputInt)
         {
             Item selectedItem = null;
@@ -634,6 +660,10 @@ namespace _1543493_Week8_Challenge.ShopSystem
             return selectedItem;
         }
 
+        /// <summary>
+        /// Retrieve all basket items from list and print them with total basket cost and cost of each item * quantity in basket.
+        /// </summary>
+        /// <returns></returns>
         private decimal PrintBasket()
         {
             Utilities.StringWithColor($"\n>> Current basket <<", ConsoleColor.Cyan, false);
@@ -667,6 +697,13 @@ namespace _1543493_Week8_Challenge.ShopSystem
             return sumBasket;
         }
 
+        /// <summary>
+        /// Generic check to see if an item will be reduced below 0 stock by an amount input by the user. If it will, flag it and
+        /// give the user an error warning.
+        /// </summary>
+        /// <param name="item"></item selected elsewhere for processing.>
+        /// <param name="deduction"></number input to reduce the processed item from a list.>
+        /// <returns></if true, deduction number WILL NOT reduce stock below 0, else false.>
         private bool StockCheck(Item item, int deduction)
         {
             if (item.stock < deduction)
@@ -677,6 +714,11 @@ namespace _1543493_Week8_Challenge.ShopSystem
             return true;
         }
 
+        /// <summary>
+        /// Print all items in the client's basket and total up the cost of all items * quantity. If user has the balance to pay, provide
+        /// a confirmation warning, with new balance if they purchase items. If no items are in the basket, print statement clarifying
+        /// this.
+        /// </summary>
         private void CheckoutBasket()
         {
             bool checkingOut = true;

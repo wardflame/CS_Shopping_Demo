@@ -32,5 +32,5 @@
 
 
 ## Additional Information ##
-Application incorporates simple save system, located in Saves\save.json. There are predetermined client templates in there.
+Application incorporates a simple save system, located in Saves\save.json. There are predetermined client templates in there.
 You can use them to test functionality, or you can create your own. Choice is yours.

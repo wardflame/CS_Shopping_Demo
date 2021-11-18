@@ -28,4 +28,4 @@
 
 ## 10/10 ##
 - [x] items are now limited and have a stack system [IMPLEMENTED -- In Progress]
-- [ ] if 0 stack it cannot be bought again (potentially remove from list) sold items need to be re-added to shop stack [IMPLEMENTING]
+- [x] if 0 stack it cannot be bought again (potentially remove from list) sold items need to be re-added to shop stack [IMPLEMENTING]

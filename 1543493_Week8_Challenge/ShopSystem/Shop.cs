@@ -163,7 +163,7 @@ namespace _1543493_Week8_Challenge.ShopSystem
             {
                 Utilities.PrintShopBanner();
                 int iSize = PrintShopInventory();
-                bool canAfford = PrintBasket();
+                decimal totalBasket = PrintBasket();
                 client.PrintClientBalance();
 
                 Item desired;
@@ -177,15 +177,19 @@ namespace _1543493_Week8_Challenge.ShopSystem
                     if (int.TryParse(input, out int inputInt) && inputInt > 0 && inputInt <= iSize)
                     {
                         desired = GetItemFromShop(inputInt);
-                        AddItemToBasket(desired);
+                        if (desired != null)
+                        {
+                            AddItemToBasket(desired);
+                        }
                         Thread.Sleep(2000);
                         break;
                     }
                     else if (input == "c")
                     {
-                        if (canAfford)
+                        if (totalBasket < client.balance)
                         {
-
+                            CheckoutBasket();
+                            break;
                         }
                         else
                         {
@@ -244,7 +248,14 @@ namespace _1543493_Week8_Challenge.ShopSystem
                     Utilities.StringWithColor(categories[(int)item.itemType], ConsoleColor.DarkGreen, false);
                 }
 
-                Console.WriteLine($"\n{i + 1}. {item}");
+                if (item.stock == 0)
+                {
+                    Utilities.StringWithColor($"\n{i + 1}. {item.name} [OUT OF STOCK]", ConsoleColor.DarkRed, false);
+                }
+                else
+                {
+                    Console.WriteLine($"\n{i + 1}. {item}");
+                }
                 previousItemType = item.itemType;
 
                 inventorySize += i;
@@ -262,14 +273,19 @@ namespace _1543493_Week8_Challenge.ShopSystem
                 if (inputInt > 0 && inputInt <= bazaarInventory.Count)
                 {
                     selectedItem = bazaarInventory[inputInt - 1];
+                    if (selectedItem.stock == 0)
+                    {
+                        Utilities.StringWithColor($"\n{selectedItem.name} out of stock. Please check back later.", ConsoleColor.DarkRed, false);
+                        selectedItem = null;
+                        break;
+                    }
+                    Console.WriteLine($"\n{selectedItem.name} selected!");
                 }
                 else
                 {
                     Console.WriteLine("\nPlease try again.\n");
                 }
             }
-
-            Console.WriteLine($"\n{selectedItem.name} selected!");
             return selectedItem;
         }
 
@@ -299,7 +315,7 @@ namespace _1543493_Week8_Challenge.ShopSystem
             }
         }
 
-        private bool PrintBasket()
+        private decimal PrintBasket()
         {
             Utilities.StringWithColor($"\n>> Current basket <<", ConsoleColor.Cyan, false);
 
@@ -308,11 +324,16 @@ namespace _1543493_Week8_Challenge.ShopSystem
                 Utilities.StringWithColor("\nNo items currently in basket.", ConsoleColor.DarkGray, false);
             }
 
+            basket.Sort((itemA, itemB) => itemA.itemType.CompareTo(itemB.itemType));
+
             decimal sumBasket = 0;
-            foreach (Item items in basket)
+            for (int i = 0; i < basket.Count; i++)
             {
-                sumBasket += items.stock * items.cost;
-                Console.WriteLine($"\n{items.name}\nQuantity in basket: {items.stock}\nCost (total quantity): {Utilities.DecimalToString(items.cost * items.stock)}");
+                Item basketi = basket[i];
+
+                Console.WriteLine($"\n{basketi.name}\nQuantity in basket: {basketi.stock}\nCost (total quantity): {Utilities.DecimalToString(basketi.cost * basketi.stock)}");
+
+                sumBasket += basketi.stock * basketi.cost;
             }
 
             if (sumBasket > client.balance)
@@ -322,10 +343,9 @@ namespace _1543493_Week8_Challenge.ShopSystem
                 Utilities.StringWithColor($" exceeds client balance: ", ConsoleColor.DarkGray, true);
                 Utilities.StringWithColor($"{Utilities.DecimalToString(client.balance)}", ConsoleColor.Yellow, false);
                 Utilities.StringWithColor($"Please edit basket until total comes withing range of client balance.", ConsoleColor.DarkGray, false);
-                return false;
             }
             Console.WriteLine($"\nBasket total: {Utilities.DecimalToString(sumBasket)}");
-            return true;
+            return sumBasket;
         }
 
         private bool StockCheck(Item item, int deduction)
@@ -340,7 +360,46 @@ namespace _1543493_Week8_Challenge.ShopSystem
 
         private void CheckoutBasket()
         {
+            Console.Clear();
+            Utilities.PrintShopBanner();
+            decimal totalBasket = PrintBasket();
+            client.PrintClientBalance();
 
+            string input = Utilities.GetUserInput("\n1. Purchase items in basket" +
+                "\n2. Return to previous menu");
+
+            switch (input)
+            {
+                case "1":
+                    {
+                        Console.Write($"\nYou're about to spend ");
+                        Utilities.StringWithColor($"{Utilities.DecimalToString(totalBasket)}", ConsoleColor.Cyan, true);
+                        Console.Write($" for the above items.");
+                        Console.Write($"\nYour new balance will be: ");
+                        Utilities.StringWithColor($"{Utilities.DecimalToString(client.balance - totalBasket)}.", ConsoleColor.Yellow, true);
+                        bool purchased = Utilities.InputVerification(" Proceed?");
+
+                        if (purchased)
+                        {
+                            int amount = Utilities.StringToInt(input);
+                            for (int i = 0; i < basket.Count; i++)
+                            {
+                                Item basketItem = basket[i];
+                                Item inventoryItem = basketItem.Clone();
+
+                                basketItem.stock += amount;
+                                item.stock -= amount;
+
+                                basket.Add(basketItem);
+
+                                Utilities.StringWithColor($"\n{basketItem.name} added to basket.", ConsoleColor.DarkGreen, false);
+
+                                break;
+                            }
+                        }
+                    }
+                    break;
+            }
         }
     }
 }

@@ -20,46 +20,77 @@ namespace _1543493_Week8_Challenge.ShopSystem
         public List<Client> clientList = new List<Client>();
 
         public List<Item> bazaarInventory = new List<Item>();
-        public List<Item> basket = new List<Item>();
 
+        /// <summary>
+        /// Central hub for shopping. User provides input in the main menu to branch out to different parts of the shop.
+        /// Check for save file. If save is available, load information. If there are clients available in the client list,
+        /// have user choose a client from the list. In future, I would add a password system for client security.
+        /// </summary>
         public static void InShop()
         {
             Shop shop = InitShop();
 
             while (running)
             {
-                string shopBranch = shop.ShopMainMenu();
-                switch (shopBranch)
+                if (shop.clientList.Count > 0)
                 {
-                    case "1":
-                        {
-                            shop.ClientPurchaseArms();
-                        }
-                        break;
-                    case "2":
-                        {
-                            shop.ClientReviewSellInventory();
-                        }
-                        break;
-                    default:
-                        {
-                            Utilities.StringWithColor("\nInput a valid option.", ConsoleColor.Red, false);
-                            Thread.Sleep(1500);
-                            Console.Clear();
-                        }
-                        break;
+                    shop.client = Client.ChooseClient(shop);
+                    shop.saveData.currentClient = shop.client;
+                    shop.saveData.SaveShop();
+                    Console.Clear();
+                }
+
+                bool shopping = true;
+                while (shopping)
+                {
+                    string shopBranch = shop.ShopMainMenu();
+                    switch (shopBranch)
+                    {
+                        case "1":
+                            {
+                                shop.ClientPurchaseArms();
+                            }
+                            break;
+                        case "2":
+                            {
+                                shop.ClientReviewSellInventory();
+                            }
+                            break;
+                        case "3":
+                            {
+                                Console.Clear();
+                                shop.client = Client.ChooseClient(shop);
+                                shop.saveData.currentClient = shop.client;
+                                shop.saveData.SaveShop();
+                                Console.Clear();
+                            }
+                            break;
+                        case "x":
+                            {
+                                Environment.Exit(1);
+                            }
+                            break;
+                        default:
+                            {
+                                Utilities.StringWithColor("\nInvalid input.", ConsoleColor.Red, false);
+                                Thread.Sleep(1500);
+                                Console.Clear();
+                            }
+                            break;
+                    }
                 }
             }
         }
 
+        /// <summary>
+        /// Is there a Saves directory? If not, make it. Does a save.json exist there? If not, create a first client and make
+        /// a new save.json in Saves.
+        /// </summary>
+        /// <returns></return a shop object with all information needed to start.>
         private static Shop InitShop()
         {
             Shop shop = new Shop(); ;
-            if (Directory.Exists("Saves"))
-            {
-
-            }
-            else
+            if (!Directory.Exists("Saves"))
             {
                 Directory.CreateDirectory("Saves");
             }
@@ -81,10 +112,15 @@ namespace _1543493_Week8_Challenge.ShopSystem
                 shop.saveData.clientList = shop.clientList;
                 shop.saveData.bazaarInventory = shop.bazaarInventory;
                 shop.saveData.SaveShop();
+                Console.Clear();
             }
             return shop;
         }
 
+        /// <summary>
+        /// Create items for the shop inventory, with appropriate stocks.
+        /// </summary>
+        /// <returns></return the new list with all items.>
         private static List<Item> InitShopInventory()
         {
             List<Item> list = new List<Item>();
@@ -147,6 +183,10 @@ namespace _1543493_Week8_Challenge.ShopSystem
             return list;
         }
 
+        /// <summary>
+        /// Print a menu for the user to navigate the different areas of the shop.
+        /// </summary>
+        /// <returns></user input for calling methods.>
         private string ShopMainMenu()
         {
             Utilities.PrintShopBanner();
@@ -155,11 +195,19 @@ namespace _1543493_Week8_Challenge.ShopSystem
             client.PrintClientBalance();
 
             string input = Utilities.GetUserInput("\n1. Buy armaments" +
-                "\n2. Review/Sell client's inventory");
+                "\n2. Review/Sell client's inventory" +
+                "\n3. Choose different client" +
+                "\n4. Input x to exit application");
 
             return input;
         }
 
+        /// <summary>
+        /// Print the current, sorted shop inventory for the user to browse. Input a number correlating to select it and then
+        /// input a second number for how many of the item the user wants to add to the inventory. Adding items to basket reduces
+        /// the shop's stock whilst it's in there. User can edit their basket or checkout items from this menu. If the user lacks
+        /// the funds to go to checkout, notification is given, and the checkout menu is inaccessible.
+        /// </summary>
         private void ClientPurchaseArms()
         {
             Console.Clear();
@@ -210,14 +258,12 @@ namespace _1543493_Week8_Challenge.ShopSystem
                     }
                     else if (input == "x")
                     {
-                        Utilities.StringWithColor("\nReturning to main menu...", ConsoleColor.Yellow, false);
                         browsing = false;
-                        Thread.Sleep(1500);
                         break;
                     }
                     else
                     {
-                        Utilities.StringWithColor("\nInvalid response.", ConsoleColor.Red, false);
+                        Utilities.StringWithColor("\nInvalid input.", ConsoleColor.Red, false);
                         Thread.Sleep(1500);
                         break;
                     }
@@ -226,6 +272,11 @@ namespace _1543493_Week8_Challenge.ShopSystem
             }
         }
 
+
+        /// <summary>
+        /// User can navigate the client's basket, similarly to the ClientPurchaseArms method, allowing them to select an item
+        /// in the basket and remove an input quantity of the item. Basket stock returns to the shop stock when removed.
+        /// </summary>
         private void ClientEditBasket()
         {
             Console.Clear();
@@ -241,7 +292,7 @@ namespace _1543493_Week8_Challenge.ShopSystem
                     string input = Utilities.GetUserInput($"\n1. Select an item by number to remove from basket" +
                         $"\n2. Input x to return to previous menu");
 
-                    if (int.TryParse(input, out int inputInt) && inputInt > 0 && inputInt <= basket.Count)
+                    if (int.TryParse(input, out int inputInt) && inputInt > 0 && inputInt <= client.basket.Count)
                     {
                         desired = GetItemFromBasket(inputInt);
                         if (desired != null)
@@ -258,7 +309,7 @@ namespace _1543493_Week8_Challenge.ShopSystem
                     }
                     else
                     {
-                        Utilities.StringWithColor("\nInvalid response.", ConsoleColor.Red, false);
+                        Utilities.StringWithColor("\nInvalid input.", ConsoleColor.Red, false);
                         Thread.Sleep(1500);
                         break;
                     }
@@ -267,6 +318,10 @@ namespace _1543493_Week8_Challenge.ShopSystem
             }
         }
 
+        /// <summary>
+        /// User reviews the client's purchased inventory, stored separately. After purchasing items from the shop, goods are
+        /// added to this inventory list. Goods can be selected and sold back to the shop at 75% of original price.
+        /// </summary>
         private void ClientReviewSellInventory()
         {
             Console.Clear();
@@ -294,14 +349,12 @@ namespace _1543493_Week8_Challenge.ShopSystem
                     }
                     else if (input == "x")
                     {
-                        Utilities.StringWithColor("\nReturning to main menu...", ConsoleColor.Yellow, false);
                         reviewSell = false;
-                        Thread.Sleep(1500);
                         break;
                     }
                     else
                     {
-                        Utilities.StringWithColor("\nInvalid response.", ConsoleColor.Red, false);
+                        Utilities.StringWithColor("\nInvalid input.", ConsoleColor.Red, false);
                         Thread.Sleep(1500);
                         break;
                     }
@@ -310,6 +363,12 @@ namespace _1543493_Week8_Challenge.ShopSystem
             }
         }
 
+        /// <summary>
+        /// Read the parsed integer and see if it is within range of the client's inventory. If it is, get the item in the inventory
+        /// at the integer's index.
+        /// </summary>
+        /// <param name="inputInt"></parsed to acquire item at index int.>
+        /// <returns></returns item at the inputInt index.>
         private Item GetItemFromInventory(int inputInt)
         {
             Item selectedItem = null;
@@ -329,6 +388,12 @@ namespace _1543493_Week8_Challenge.ShopSystem
             return selectedItem;
         }
 
+        /// <summary>
+        /// Sort the client's inventory by enum type and then print them out, each headered by their type from a string array.
+        /// Provide the total cost of each item with the reduced market rate for selling back. Also provide a grand total cost for
+        /// all items in inventory, reduced too.
+        /// </summary>
+        /// <returns></returns>
         private int PrintClientInventory()
         {
             Utilities.StringWithColor($"\n>> Inventory: {client.name} <<", ConsoleColor.Cyan, false);
@@ -364,6 +429,10 @@ namespace _1543493_Week8_Challenge.ShopSystem
             return inventorySize;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private int PrintShopInventory()
         {
             bazaarInventory.Sort((itemA, itemB) => itemA.itemType.CompareTo(itemB.itemType));
@@ -486,18 +555,24 @@ namespace _1543493_Week8_Challenge.ShopSystem
                     break;
                 }
 
-                int amount = Utilities.StringToInt(input);
-                if (StockCheck(item, amount))
+                if (int.TryParse(input, out int amount))
                 {
-                    Item basketItem = item.Clone();
-                    basketItem.stock += amount;
-                    item.stock -= amount;
+                    if (StockCheck(item, amount))
+                    {
+                        Item basketItem = item.Clone();
+                        basketItem.stock += amount;
+                        item.stock -= amount;
 
-                    basket.Add(basketItem);
+                        client.basket.Add(basketItem);
 
-                    Utilities.StringWithColor($"\n{basketItem.name} added to basket.", ConsoleColor.DarkGreen, false);
-                    
-                    break;
+                        Utilities.StringWithColor($"\n{amount} {basketItem.name}(s) added to basket.", ConsoleColor.DarkGreen, false);
+
+                        break;
+                    }
+                }
+                else
+                {
+                    Utilities.StringWithColor("\nInvalid input.", ConsoleColor.Red, false);
                 }
             }
         }
@@ -519,7 +594,7 @@ namespace _1543493_Week8_Challenge.ShopSystem
 
                     if (item.stock - amount == 0)
                     {
-                        basket.Remove(item);
+                        client.basket.Remove(item);
                         shopItem.stock += amount;
                     }
                     else if (item.stock - amount > 0)
@@ -546,9 +621,9 @@ namespace _1543493_Week8_Challenge.ShopSystem
 
             while (selectedItem == null)
             {
-                if (inputInt > 0 && inputInt <= basket.Count)
+                if (inputInt > 0 && inputInt <= client.basket.Count)
                 {
-                    selectedItem = basket[inputInt - 1];
+                    selectedItem = client.basket[inputInt - 1];
                     Console.WriteLine($"\n{selectedItem.name} selected!");
                 }
                 else
@@ -563,17 +638,17 @@ namespace _1543493_Week8_Challenge.ShopSystem
         {
             Utilities.StringWithColor($"\n>> Current basket <<", ConsoleColor.Cyan, false);
 
-            if (basket.Count == 0)
+            if (client.basket.Count == 0)
             {
-                Utilities.StringWithColor("\nNo items currently in basket.", ConsoleColor.DarkGray, false);
+                Utilities.StringWithColor("\nNo items currently in client.basket.", ConsoleColor.DarkGray, false);
             }
 
-            basket.Sort((itemA, itemB) => itemA.itemType.CompareTo(itemB.itemType));
+            client.basket.Sort((itemA, itemB) => itemA.itemType.CompareTo(itemB.itemType));
 
             decimal sumBasket = 0;
-            for (int i = 0; i < basket.Count; i++)
+            for (int i = 0; i < client.basket.Count; i++)
             {
-                Item basketi = basket[i];
+                Item basketi = client.basket[i];
 
                 Console.WriteLine($"\n{i + 1}. {basketi.name}\nQuantity in basket: {basketi.stock}\nCost (total quantity): {Utilities.DecimalToString(basketi.cost * basketi.stock)}");
 
@@ -613,46 +688,56 @@ namespace _1543493_Week8_Challenge.ShopSystem
                 client.PrintClientBalance();
 
                 string input = Utilities.GetUserInput("\n1. Purchase items in basket" +
-                    "\n2. Return to previous menu");
+                    "\n2. Input x to return to previous menu");
 
+                
                 switch (input)
                 {
                     case "1":
                         {
-                            Console.Write($"\nYou're about to spend ");
-                            Utilities.StringWithColor($"{Utilities.DecimalToString(totalBasket)}", ConsoleColor.Cyan, true);
-                            Console.Write($" for the above items.");
-                            Console.Write($"\nYour new balance will be: ");
-                            Utilities.StringWithColor($"{Utilities.DecimalToString(client.balance - totalBasket)}. ", ConsoleColor.Yellow, true);
-                            bool purchased = Utilities.InputVerification("Proceed? (y/n)");
-
-                            if (purchased)
+                            if (client.basket.Count > 0)
                             {
-                                for (int i = 0; i < basket.Count; i++)
-                                {
-                                    Item basketItem = basket[i];
-                                    Item inventoryItem = basketItem.Clone();
-                                    Item existingItem = client.inventory.Find(n => n.name == inventoryItem.name);
+                                Console.Write($"\nYou're about to spend ");
+                                Utilities.StringWithColor($"{Utilities.DecimalToString(totalBasket)}", ConsoleColor.Cyan, true);
+                                Console.Write($" for the above items.");
+                                Console.Write($"\nYour new balance will be: ");
+                                Utilities.StringWithColor($"{Utilities.DecimalToString(client.balance - totalBasket)}. ", ConsoleColor.Yellow, true);
+                                bool purchased = Utilities.InputVerification("Proceed? (y/n)");
 
-                                    if (client.inventory.Contains(existingItem))
+                                if (purchased)
+                                {
+                                    for (int i = 0; i < client.basket.Count; i++)
                                     {
-                                        existingItem.stock += basketItem.stock;
+                                        Item basketItem = client.basket[i];
+                                        Item inventoryItem = basketItem.Clone();
+                                        Item existingItem = client.inventory.Find(n => n.name == inventoryItem.name);
+
+                                        if (client.inventory.Contains(existingItem))
+                                        {
+                                            existingItem.stock += basketItem.stock;
+                                        }
+                                        else
+                                        {
+                                            client.inventory.Add(inventoryItem);
+                                            inventoryItem.stock = basketItem.stock;
+                                        }
                                     }
-                                    else
-                                    {
-                                        client.inventory.Add(inventoryItem);
-                                        inventoryItem.stock = basketItem.stock;
-                                    }
+                                    client.basket.Clear();
+                                    client.balance -= totalBasket;
+                                    Utilities.StringWithColor($"\nPurchase completed.", ConsoleColor.DarkGreen, false);
+                                    Thread.Sleep(2000);
+                                    checkingOut = false;
                                 }
-                                basket.Clear();
-                                client.balance -= totalBasket;
-                                Utilities.StringWithColor($"\nPurchase completed.", ConsoleColor.DarkGreen, false);
+                            }
+                            else
+                            {
+                                Utilities.StringWithColor("\nNo items in basket to purchase.", ConsoleColor.Cyan, false);
                                 Thread.Sleep(2000);
-                                checkingOut = false;
                             }
                         }
+                            
                         break;
-                    case "2":
+                    case "x":
                         {
                             checkingOut = false;
                             Console.Clear();
@@ -660,7 +745,8 @@ namespace _1543493_Week8_Challenge.ShopSystem
                         break;
                     default:
                         {
-                            Utilities.StringWithColor("\nInvalid response.", ConsoleColor.Red, false);
+                            Utilities.StringWithColor("\nInvalid input.", ConsoleColor.Red, false);
+                            Thread.Sleep(1500);
                         }
                         break;
                 }

@@ -149,8 +149,7 @@ namespace _1543493_Week8_Challenge.ShopSystem
 
             string input = Utilities.GetUserInput("\n1. Buy armaments" +
                 "\n2. Sell armaments" +
-                "\n3. Review/Edit basket" +
-                "\n4. Review client's inventory");
+                "\n3. Review client's inventory");
 
             return input;
         }
@@ -163,8 +162,8 @@ namespace _1543493_Week8_Challenge.ShopSystem
             {
                 Utilities.PrintShopBanner();
                 int iSize = PrintShopInventory();
-                client.PrintClientBalance();
                 bool canAfford = PrintBasket();
+                client.PrintClientBalance();
 
                 Item desired;
                 while (true)
@@ -176,7 +175,7 @@ namespace _1543493_Week8_Challenge.ShopSystem
 
                     if (int.TryParse(input, out int inputInt) && inputInt > 0 && inputInt <= iSize)
                     {
-                        desired = GetItemFromShop(bazaarInventory, inputInt);
+                        desired = GetItemFromShop(inputInt);
                         AddItemToBasket(desired);
                         Thread.Sleep(2000);
                         break;
@@ -253,15 +252,15 @@ namespace _1543493_Week8_Challenge.ShopSystem
             return inventorySize;
         }
 
-        private Item GetItemFromShop(List<Item> list, int inputInt)
+        private Item GetItemFromShop(int inputInt)
         {
             Item selectedItem = null;
 
             while (selectedItem == null)
             {
-                if (inputInt > 0 && inputInt <= list.Count)
+                if (inputInt > 0 && inputInt <= bazaarInventory.Count)
                 {
-                    selectedItem = list[inputInt - 1];
+                    selectedItem = bazaarInventory[inputInt - 1];
                 }
                 else
                 {
@@ -277,7 +276,7 @@ namespace _1543493_Week8_Challenge.ShopSystem
         {
             while (true)
             {
-                string input = Utilities.GetUserInput($"\nHow many {item.name}s would you like to add to your basket? (type x to exit to previous menu)");
+                string input = Utilities.GetUserInput($"\nHow many {item.name}s would you like to add to your basket? (input x to cancel)");
                 if (input == "x")
                 {
                     break;

@@ -8,6 +8,7 @@ namespace _1543493_Week8_Challenge
     {
         static void Main(string[] args)
         {
+            Console.SetWindowSize(130, 75);
             Shop.InShop();
         }
     }

@@ -21,11 +21,11 @@
 ## 8/10 ##
 - [x] the ability to do multiple buy runs with persistent player inventory states
 - [x] if starting money is 100 and first buy used 20 then the second time the player will only have 80
-- [] the ability to edit basket anytime by removing objects one by one [IMPLEMENTING]
+- [ ] the ability to edit basket anytime by removing objects one by one [IMPLEMENTING]
 
 ## 9/10 ##
-- [] ability to sell items back to the shop at a reduced rate [IMPLEMENTING]
+- [ ] ability to sell items back to the shop at a reduced rate [IMPLEMENTING]
 
 ## 10/10 ##
-- [] items are now limited and have a stack system
--- if 0 stack it cannot be bought again (potentially remove from list) sold items need to be re-added to shop stack
+- [ ] items are now limited and have a stack system [IMPLEMENTING]
+- [ ] if 0 stack it cannot be bought again (potentially remove from list) sold items need to be re-added to shop stack [IMPLEMENTING]

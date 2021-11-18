@@ -19,6 +19,7 @@ namespace _1543493_Week8_Challenge.ShopSystem
         public List<Client> clientList = new List<Client>();
 
         public List<Item> bazaarInventory = new List<Item>();
+        public List<Item> basket = new List<Item>();
 
         public static void InShop()
         {
@@ -289,7 +290,7 @@ namespace _1543493_Week8_Challenge.ShopSystem
                     basketItem.stock += amount;
                     item.stock -= amount;
 
-                    client.basket.Add(basketItem);
+                    basket.Add(basketItem);
 
                     Utilities.StringWithColor($"\n{basketItem.name} added to basket.", ConsoleColor.DarkGreen, false);
                     
@@ -302,13 +303,13 @@ namespace _1543493_Week8_Challenge.ShopSystem
         {
             Utilities.StringWithColor($"\n>> Current basket <<", ConsoleColor.Cyan, false);
 
-            if (client.basket.Count == 0)
+            if (basket.Count == 0)
             {
                 Utilities.StringWithColor("\nNo items currently in basket.", ConsoleColor.DarkGray, false);
             }
 
             decimal sumBasket = 0;
-            foreach (Item items in client.basket)
+            foreach (Item items in basket)
             {
                 sumBasket += items.stock * items.cost;
                 Console.WriteLine($"\n{items.name}\nQuantity in basket: {items.stock}\nCost (total quantity): {Utilities.DecimalToString(items.cost * items.stock)}");

@@ -11,7 +11,6 @@ namespace _1543493_Week8_Challenge.ClientContent
         public string name;
         public decimal balance;
         public List<Item> inventory = new List<Item>();
-        public List<Item> basket = new List<Item>();
 
         public override string ToString()
         {

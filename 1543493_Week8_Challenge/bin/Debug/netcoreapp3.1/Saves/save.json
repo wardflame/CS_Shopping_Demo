@@ -1,16 +1,14 @@
 {
   "currentClient": {
     "name": "Shady Dealer",
-    "balance": 2000.0,
-    "inventory": [],
-    "basket": []
+    "balance": 50000.0,
+    "inventory": []
   },
   "clientList": [
     {
       "name": "Shady Dealer",
-      "balance": 2000.0,
-      "inventory": [],
-      "basket": []
+      "balance": 50000.0,
+      "inventory": []
     }
   ],
   "bazaarInventory": [

@@ -26,5 +26,15 @@ namespace _1543493_Week8_Challenge.ItemContent
             this.itemType = itemType;
             this.cost = cost;
         }
+
+        public Item Clone()
+        {
+            return new Item(name, description, itemType, cost);
+        }
+
+        public override string ToString()
+        {
+            return $"{name}\n-- {description}\nCost: {Utilities.DecimalToString(cost)}\nStock: {stock}";
+        }
     }
 }

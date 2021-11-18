@@ -1,0 +1,81 @@
+{
+  "currentClient": {
+    "name": "Shady Dealer",
+    "balance": 90000000000.0,
+    "inventory": [],
+    "basket": []
+  },
+  "clientList": [
+    {
+      "name": "Shady Dealer",
+      "balance": 90000000000.0,
+      "inventory": [],
+      "basket": []
+    }
+  ],
+  "bazaarInventory": [
+    {
+      "name": "AK-47",
+      "description": "Reliable, 7.62x39mm automatic rifle, unrivalled in its power under environmental stress.",
+      "itemType": 0,
+      "cost": 759.95,
+      "stock": 2000
+    },
+    {
+      "name": "PKM",
+      "description": "Unrelenting, 7.62x54mmR machine gun.",
+      "itemType": 0,
+      "cost": 995.99,
+      "stock": 800
+    },
+    {
+      "name": "RPG-7",
+      "description": "Unguided, handheld, reusable rocket launcher.",
+      "itemType": 0,
+      "cost": 1250.99,
+      "stock": 1200
+    },
+    {
+      "name": "Toyota Hilux",
+      "description": "A robust, no-nonsense all-terrain pickup truck, ready for HMG attachments.",
+      "itemType": 1,
+      "cost": 46885.0,
+      "stock": 100
+    },
+    {
+      "name": "T-34/76",
+      "description": "An old, inexpensive Soviet tank mass-produced during the second world war.",
+      "itemType": 1,
+      "cost": 230000.0,
+      "stock": 50
+    },
+    {
+      "name": "M1 Abrams",
+      "description": "The top of the line from Shifting Sands. Civil wars can be fought with only a handful of cutting-edge battle tanks.",
+      "itemType": 1,
+      "cost": 6200000.0,
+      "stock": 8
+    },
+    {
+      "name": "R-44 Raven II",
+      "description": "A standard civilian helicopter, capable of carrying a small fireteam and some equipment.",
+      "itemType": 2,
+      "cost": 465000.0,
+      "stock": 20
+    },
+    {
+      "name": "MH-6 Little Bird",
+      "description": "A small, agile helicopter capable of housing machine guns and rockets. Small bird, big caw.",
+      "itemType": 2,
+      "cost": 2000000.0,
+      "stock": 10
+    },
+    {
+      "name": "AH-64 Apache",
+      "description": "The apex predator of the sky. Comes with thermal imaging, explosive machine guns and missiles. Fear the skies.",
+      "itemType": 2,
+      "cost": 930000000.0,
+      "stock": 5
+    }
+  ]
+}

@@ -62,7 +62,7 @@ _)| ||~|~ | || |(_|  _)(_|| |(_|_\  |_)(_|/_(_|(_||
         {
             if (!decimal.TryParse(decimalString, out decimal newDecimal))
             {
-                Console.WriteLine("\nUnable to parse as decimal.");
+                StringWithColor("\nUnable to parse as decimal.", ConsoleColor.Red, false);
                 return 0;
             }
 
@@ -73,11 +73,25 @@ _)| ||~|~ | || |(_|  _)(_|| |(_|_\  |_)(_|/_(_|(_||
         {
             if (!int.TryParse(intString, out int newInt))
             {
-                Console.WriteLine("\nUnable to parse as integer.");
+                StringWithColor("\nUnable to parse as integer.", ConsoleColor.Red, false);
                 return 0;
             }
 
             return newInt;
+        }
+
+        public static void StringWithColor(string input, ConsoleColor color, bool writeOrLine)
+        {
+            Console.ForegroundColor = color;
+            if (writeOrLine)
+            {
+                Console.Write(input);
+            }
+            else
+            {
+                Console.WriteLine(input);
+            }
+            Console.ResetColor();
         }
     }
 }

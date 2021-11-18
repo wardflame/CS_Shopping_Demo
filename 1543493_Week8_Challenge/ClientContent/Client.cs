@@ -30,7 +30,6 @@ namespace _1543493_Week8_Challenge.ClientContent
             client.balance = GetClientBalance(client.name);
             Thread.Sleep(2000);
             Console.Clear();
-            Utilities.PrintShopBanner();
 
             return client;
         }
@@ -79,12 +78,6 @@ namespace _1543493_Week8_Challenge.ClientContent
             return balance;
         }
 
-        public static Client InitClient(Client client, List<Client> clientList)
-        {
-            client = CreateNewClient();
-            return client;
-        }
-
         public static Client ChooseClient(Client client, List<Client> clientList)
         {
             Console.WriteLine(">> Client List <<");
@@ -118,16 +111,14 @@ namespace _1543493_Week8_Challenge.ClientContent
 
         public void PrintClientBalance()
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
             if (name.EndsWith("s"))
             {
-                Console.Write($"\n{name}' balance");
+                Utilities.StringWithColor($"\n{name}' balance", ConsoleColor.Yellow, true);
             }
             else
             {
-                Console.Write($"\n{name}'s balance");
+                Utilities.StringWithColor($"\n{name}'s balance", ConsoleColor.Yellow, true);
             }
-            Console.ResetColor();
             Console.WriteLine($": {Utilities.DecimalToString(balance)}");
         }
     }

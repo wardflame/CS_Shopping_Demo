@@ -3,12 +3,12 @@ using System;
 
 namespace _1543493_Week8_Challenge
 {
+    // 1543493 | 18/11/2021 02:40 | v0.0.0.3
     class Program
     {
         static void Main(string[] args)
         {
-            Shop shop = new Shop();
-            shop.InShop();
+            Shop.InShop();
         }
     }
 }

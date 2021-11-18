@@ -17,12 +17,12 @@ namespace _1543493_Week8_Challenge.SaveSystem
         public void SaveShop()
         {
             string saveJson = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText("save.json", saveJson);
+            File.WriteAllText(@"Saves\save.json", saveJson);
         }
 
         public static SaveData LoadShop()
         {
-            SaveData saveLoad = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText("save.json"));
+            SaveData saveLoad = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(@"Saves\save.json"));
             return saveLoad;
         }
 

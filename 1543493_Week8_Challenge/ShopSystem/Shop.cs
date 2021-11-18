@@ -189,6 +189,11 @@ namespace _1543493_Week8_Challenge.ShopSystem
                         Thread.Sleep(2000);
                         break;
                     }
+                    else if (input == "e")
+                    {
+                        ClientEditBasket();
+                        break;
+                    }
                     else if (input == "c")
                     {
                         if (totalBasket < client.balance)
@@ -224,8 +229,42 @@ namespace _1543493_Week8_Challenge.ShopSystem
         private void ClientEditBasket()
         {
             Console.Clear();
-            Utilities.PrintShopBanner();
-            PrintBasket();
+            bool reviewingBasket = true;
+            while (reviewingBasket)
+            {
+                Utilities.PrintShopBanner();
+                PrintBasket();
+
+                Item desired;
+                while (true)
+                {
+                    string input = Utilities.GetUserInput($"\n1. Select an item by number to remove from basket" +
+                        $"\n2. Input x to return to previous menu");
+
+                    if (int.TryParse(input, out int inputInt) && inputInt > 0 && inputInt <= basket.Count)
+                    {
+                        desired = GetItemFromBasket(inputInt);
+                        if (desired != null)
+                        {
+                            RemoveItemFromBasket(desired);
+                        }
+                        Thread.Sleep(2000);
+                        break;
+                    }
+                    else if (input == "x")
+                    {
+                        reviewingBasket = false;
+                        break;
+                    }
+                    else
+                    {
+                        Utilities.StringWithColor("\nInvalid response.", ConsoleColor.Red, false);
+                        Thread.Sleep(1500);
+                        break;
+                    }
+                }
+                Console.Clear();
+            }
         }
 
         private void ClientReviewSellInventory()
@@ -375,26 +414,38 @@ namespace _1543493_Week8_Challenge.ShopSystem
                     Item shopItem = bazaarInventory.Find(i => i.name == item.name);
                     totalSale = (item.cost * amount) * sellbackRate;
 
-                    if (item.stock - amount == 0)
-                    {
-                        client.inventory.Remove(item);
-                        shopItem.stock += amount;
-                        client.balance += totalSale;
-                    }
-                    else if (item.stock - amount > 0)
-                    {
-                        item.stock -= amount;
-                        shopItem.stock += amount;
-                        client.balance += totalSale;
-                    }
-                    else if (item.stock - amount < 0)
+                    if (item.stock - amount !< 0)
                     {
                         Utilities.StringWithColor("Client does not have enough stock to sell back. Please try again.", ConsoleColor.DarkRed, false);
                         Thread.Sleep(1500);
                         Console.Clear();
                         break;
                     }
-                    Utilities.StringWithColor($"\n{item.name}(s) sold for {totalSale}.", ConsoleColor.DarkGreen, false);
+                    else
+                    {
+                        Console.Write($"\nYou're about to sell the above items for: ");
+                        Utilities.StringWithColor($"{Utilities.DecimalToString(totalSale)}", ConsoleColor.Cyan, true);
+                        Console.Write($"\nYour new balance will be: ");
+                        Utilities.StringWithColor($"{Utilities.DecimalToString(client.balance + totalSale)}. ", ConsoleColor.Yellow, true);
+                        bool sold = Utilities.InputVerification("Proceed? (y/n)");
+
+                        if (sold)
+                        {
+                            if (item.stock - amount == 0)
+                            {
+                                client.inventory.Remove(item);
+                                shopItem.stock += amount;
+                                client.balance += totalSale;
+                            }
+                            else if (item.stock - amount > 0)
+                            {
+                                item.stock -= amount;
+                                shopItem.stock += amount;
+                                client.balance += totalSale;
+                            }
+                        }
+                    }
+                    Utilities.StringWithColor($"\n{amount} {item.name}(s) sold for {Utilities.DecimalToString(totalSale)}.", ConsoleColor.DarkGreen, false);
                     break;
                 }
             }
@@ -451,6 +502,63 @@ namespace _1543493_Week8_Challenge.ShopSystem
             }
         }
 
+        private void RemoveItemFromBasket(Item item)
+        {
+            while (true)
+            {
+                string input = Utilities.GetUserInput($"\nHow many {item.name}s would you like to remove from basket? (input x to cancel)");
+                if (input == "x")
+                {
+                    break;
+                }
+
+                int amount = Utilities.StringToInt(input);
+                if (StockCheck(item, amount))
+                {
+                    Item shopItem = bazaarInventory.Find(i => i.name == item.name);
+
+                    if (item.stock - amount == 0)
+                    {
+                        basket.Remove(item);
+                        shopItem.stock += amount;
+                    }
+                    else if (item.stock - amount > 0)
+                    {
+                        item.stock -= amount;
+                        shopItem.stock += amount;
+                    }
+                    else if (item.stock - amount < 0)
+                    {
+                        Utilities.StringWithColor("Basket does not contain specified amount to return. Please try again.", ConsoleColor.DarkRed, false);
+                        Thread.Sleep(1500);
+                        Console.Clear();
+                        break;
+                    }
+                    Utilities.StringWithColor($"\n{amount} {item.name}(s) removed.", ConsoleColor.Cyan, false);
+                    break;
+                }
+            }
+        }
+
+        private Item GetItemFromBasket(int inputInt)
+        {
+            Item selectedItem = null;
+
+            while (selectedItem == null)
+            {
+                if (inputInt > 0 && inputInt <= basket.Count)
+                {
+                    selectedItem = basket[inputInt - 1];
+                    Console.WriteLine($"\n{selectedItem.name} selected!");
+                }
+                else
+                {
+                    Console.WriteLine("\nPlease try again.\n");
+                }
+            }
+            return selectedItem;
+        }
+
         private decimal PrintBasket()
         {
             Utilities.StringWithColor($"\n>> Current basket <<", ConsoleColor.Cyan, false);
@@ -467,7 +575,7 @@ namespace _1543493_Week8_Challenge.ShopSystem
             {
                 Item basketi = basket[i];
 
-                Console.WriteLine($"\n{basketi.name}\nQuantity in basket: {basketi.stock}\nCost (total quantity): {Utilities.DecimalToString(basketi.cost * basketi.stock)}");
+                Console.WriteLine($"\n{i + 1}. {basketi.name}\nQuantity in basket: {basketi.stock}\nCost (total quantity): {Utilities.DecimalToString(basketi.cost * basketi.stock)}");
 
                 sumBasket += basketi.cost * basketi.stock;
             }
@@ -488,7 +596,7 @@ namespace _1543493_Week8_Challenge.ShopSystem
         {
             if (item.stock < deduction)
             {
-                Utilities.StringWithColor("\nNot enough stock to add to basket. Please reduce the required quantity.", ConsoleColor.Red, false);
+                Utilities.StringWithColor("\nNot enough stock. Please reduce the required quantity.", ConsoleColor.Red, false);
                 return false;
             }
             return true;
@@ -524,17 +632,23 @@ namespace _1543493_Week8_Challenge.ShopSystem
                                 {
                                     Item basketItem = basket[i];
                                     Item inventoryItem = basketItem.Clone();
+                                    Item existingItem = client.inventory.Find(n => n.name == inventoryItem.name);
 
-                                    client.inventory.Add(inventoryItem);
-                                    inventoryItem.stock = basketItem.stock;
-                                    basket.Remove(basketItem);
-                                    client.balance -= totalBasket;
-
-                                    Utilities.StringWithColor($"\nPurchase completed.", ConsoleColor.DarkGreen, false);
-                                    Thread.Sleep(2000);
-                                    checkingOut = false;
+                                    if (client.inventory.Contains(existingItem))
+                                    {
+                                        existingItem.stock += basketItem.stock;
+                                    }
+                                    else
+                                    {
+                                        client.inventory.Add(inventoryItem);
+                                        inventoryItem.stock = basketItem.stock;
+                                    }
                                 }
-                                break;
+                                basket.Clear();
+                                client.balance -= totalBasket;
+                                Utilities.StringWithColor($"\nPurchase completed.", ConsoleColor.DarkGreen, false);
+                                Thread.Sleep(2000);
+                                checkingOut = false;
                             }
                         }
                         break;

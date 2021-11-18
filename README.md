@@ -21,7 +21,7 @@
 ## 8/10 ##
 - [x] the ability to do multiple buy runs with persistent player inventory states
 - [x] if starting money is 100 and first buy used 20 then the second time the player will only have 80
-- [ ] the ability to edit basket anytime by removing objects one by one [IMPLEMENTING]
+- [x] the ability to edit basket anytime by removing objects one by one [IMPLEMENTING]
 
 ## 9/10 ##
 - [x] ability to sell items back to the shop at a reduced rate

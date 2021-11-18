@@ -29,3 +29,8 @@
 ## 10/10 ##
 - [x] items are now limited and have a stack system
 - [x] if 0 stack it cannot be bought again (potentially remove from list) sold items need to be re-added to shop stack
+
+
+### Additional Information ###
+Application incorporates save simple save system, located in Saves\save.json. There are predetermined client templates in there.
+You can use them to test functionality, or you can create your own. Choice is yours.

@@ -2,13 +2,43 @@
   "currentClient": {
     "name": "Shady Dealer",
     "balance": 50000.0,
-    "inventory": []
+    "inventory": [
+      {
+        "name": "AK-47",
+        "description": "Reliable, 7.62x39mm automatic rifle, unrivalled in its power under environmental stress.",
+        "itemType": 0,
+        "cost": 759.95,
+        "stock": 20
+      },
+      {
+        "name": "PKM",
+        "description": "Unrelenting, 7.62x54mmR machine gun.",
+        "itemType": 0,
+        "cost": 995.99,
+        "stock": 800
+      }
+    ]
   },
   "clientList": [
     {
       "name": "Shady Dealer",
       "balance": 50000.0,
-      "inventory": []
+      "inventory": [
+        {
+          "name": "AK-47",
+          "description": "Reliable, 7.62x39mm automatic rifle, unrivalled in its power under environmental stress.",
+          "itemType": 0,
+          "cost": 759.95,
+          "stock": 20
+        },
+        {
+          "name": "PKM",
+          "description": "Unrelenting, 7.62x54mmR machine gun.",
+          "itemType": 0,
+          "cost": 995.99,
+          "stock": 800
+        }
+      ]
     }
   ],
   "bazaarInventory": [

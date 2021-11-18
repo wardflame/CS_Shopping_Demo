@@ -10,13 +10,13 @@
 - [x] Function that presents the sellable items in the console for the player to buy from
 - [x] Basket that holds items that the player chose but not yet bought
 - [x] Function that adds the price of all items in basket and checks if the players has enough money
-- [ ] if yes then the money is paid and items can be transferred to the player [IMPLEMENTING]
+- [x] if yes then the money is paid and items can be transferred to the player
 - [x] if no the player should be presented with the information (missing money and how much) and allowed to reset the basket to start over
 
 ### Player class ###
-- [x] money that is used to buy items (float) [DID AS DECIMAL, WITH AUTHORISATION
-- [ ] List of bought items [IMPLEMENTING: INVENTORY]
-- [ ] Function to show stored items [IMPLEMENTING]
+- [x] money that is used to buy items (float) [DID AS DECIMAL, WITH AUTHORISATION]
+- [x] List of bought items
+- [x] Function to show stored items
 
 ## 8/10 ##
 - [x] the ability to do multiple buy runs with persistent player inventory states
@@ -24,7 +24,7 @@
 - [ ] the ability to edit basket anytime by removing objects one by one [IMPLEMENTING]
 
 ## 9/10 ##
-- [ ] ability to sell items back to the shop at a reduced rate [IMPLEMENTING]
+- [x] ability to sell items back to the shop at a reduced rate
 
 ## 10/10 ##
 - [x] items are now limited and have a stack system

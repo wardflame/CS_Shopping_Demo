@@ -164,7 +164,7 @@ namespace _1543493_Week8_Challenge.ShopSystem
                 Utilities.PrintShopBanner();
                 int iSize = PrintShopInventory();
                 client.PrintClientBalance();
-                PrintBasket();
+                bool canAfford = PrintBasket();
 
                 Item desired;
                 while (true)
@@ -178,12 +178,21 @@ namespace _1543493_Week8_Challenge.ShopSystem
                     {
                         desired = GetItemFromShop(bazaarInventory, inputInt);
                         AddItemToBasket(desired);
-                        Thread.Sleep(3000);
+                        Thread.Sleep(2000);
                         break;
                     }
                     else if (input == "c")
                     {
+                        if (canAfford)
+                        {
 
+                        }
+                        else
+                        {
+                            Utilities.StringWithColor($"\nInsufficient client funds. Unable to proceed.", ConsoleColor.DarkRed, false);
+                            Thread.Sleep(2000);
+                            break;
+                        }
                     }
                     else if (input == "x")
                     {
@@ -290,7 +299,7 @@ namespace _1543493_Week8_Challenge.ShopSystem
             }
         }
 
-        private void PrintBasket()
+        private bool PrintBasket()
         {
             Utilities.StringWithColor($"\n>> Current basket <<", ConsoleColor.Cyan, false);
 
@@ -305,7 +314,18 @@ namespace _1543493_Week8_Challenge.ShopSystem
                 sumBasket += items.stock * items.cost;
                 Console.WriteLine($"\n{items.name}\nQuantity in basket: {items.stock}\nCost (total quantity): {Utilities.DecimalToString(items.cost * items.stock)}");
             }
+
+            if (sumBasket > client.balance)
+            {
+                Utilities.StringWithColor($"\nBasket total: ", ConsoleColor.DarkGray, true);
+                Utilities.StringWithColor($"{Utilities.DecimalToString(sumBasket)}", ConsoleColor.DarkRed, true);
+                Utilities.StringWithColor($" exceeds client balance: ", ConsoleColor.DarkGray, true);
+                Utilities.StringWithColor($"{Utilities.DecimalToString(client.balance)}", ConsoleColor.Yellow, false);
+                Utilities.StringWithColor($"Please edit basket until total comes withing range of client balance.", ConsoleColor.DarkGray, false);
+                return false;
+            }
             Console.WriteLine($"\nBasket total: {Utilities.DecimalToString(sumBasket)}");
+            return true;
         }
 
         private bool StockCheck(Item item, int deduction)
